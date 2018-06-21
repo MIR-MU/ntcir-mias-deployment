@@ -1,7 +1,7 @@
 SHELL=/bin/bash
 
 CPU_NUMBER=30
-MIRMU_GIT_URL_PREFIX=https://github.com/MIR-MU/
+MIRMU_GIT_URL_PREFIX=https://github.com/MIR-MU
 
 # External tools
 CURL=curl --location --cookie oraclelicense=accept-securebackup-cookie
