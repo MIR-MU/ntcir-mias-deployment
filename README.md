@@ -1,5 +1,5 @@
-NTCIR MIaS Search Deployment – Evaluates NTCIR MIaS Search on NTCIR Math datasets
-=================================================================================
+NTCIR MIaS Search Deployment – Evaluates [NTCIR MIaS Search][ntcir-mias-search] on NTCIR Math datasets
+======================================================================================================
 
 NTCIR MIaS Search Deployment is a [GNU make][make] makefile that automates the
 deployment of [WebMIaS][], and the configuration and execution of the various
@@ -17,7 +17,7 @@ Performing a clean run
 Before running make, you will need to adjust the definitions of the following
 variables in the file `definitions.mk` to match your environment:
 
-- `CPU_NUMBER` – The number of threads the tools will use.
+- `CPU_NUMBER` – The number of threads the tools will use
 - `TOPICS_NTCIR10_FS` – The path to the [NTCIR-10 Math][aizawaetal13-ntcir10]
   [topics][ntcir-task-data] for the math retrieval formula search subtask
 - `TOPICS_NTCIR10_FT` – The path to the [NTCIR-10 Math][aizawaetal13-ntcir10]
