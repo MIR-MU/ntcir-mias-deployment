@@ -104,6 +104,7 @@ CPUs. Only targets that take longer than a minute are listed:
 
 | Target name  | Wall clock time | Number of testing runs |
 | ------------ | --------------- | ---------------------- |
+| $(INDEX_NTCIR11_12) | 17h 53m 34s | 1 |
 | $(INDEX_NTCIR10) | 9h 2m 56s | 2 |
 | $(NTCIR_MATH_DENSITY_NTCIR11) | 1h 5m 30s | 4 |
 | $(RESULTS_NTCIR11) | 53m 41s | 3 |
