@@ -99,7 +99,7 @@ converted [NTCIR-10 Math][aizawaetal13-ntcir10] [dataset][ntcir-10-math-data],
 and 11G the final results.
 
 The following table shows how long it takes on average to construct the
-individual targets with 448G of RAM, and eight Intel XeonTM X7560 2.26 GHz
+individual targets with 448G of RAM, and eight Intel Xeon™ X7560 2.26 GHz
 CPUs. Only targets that take longer than a minute are listed:
 
 | Target name  | Wall clock time | Number of testing runs |
