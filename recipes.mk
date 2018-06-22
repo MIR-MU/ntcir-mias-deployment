@@ -126,18 +126,18 @@ $(INDEX_NTCIR10): $(MIAS) $(DATASET_NTCIR10_CONVERTED)
 	$(MIAS_STARTUP) -conf mias.properties \
 	  -overwrite "$(DATASET_NTCIR10_CONVERTED)/xhtml5" "$(DATASET_NTCIR10_CONVERTED)"
 
-$(INDEX_NTCIR12): $(MIAS) $(DATASET_NTCIR11_12)
+$(INDEX_NTCIR11_12): $(MIAS) $(DATASET_NTCIR11_12)
 	set -e
 	cd $(MIAS)/target
 	sed 's/^| //' >mias.properties <<'EOF'
-	| INDEXDIR=$(INDEX_NTCIR12)
+	| INDEXDIR=$(INDEX_NTCIR11_12)
 	| UPDATE=false
 	| THREADS=$(MIAS_THREADS)
 	| MAXRESULTS=$(INDEX_MAXRESULTS)
 	| DOCLIMIT=-1
 	| FORMULA_DOCUMENTS=false
 	EOF
-	mkdir -p $(INDEX_NTCIR12)
+	mkdir -p $(INDEX_NTCIR11_12)
 	$(MIAS_STARTUP) -conf mias.properties \
 	  -overwrite "$(DATASET_NTCIR11_12)/xhtml5" "$(DATASET_NTCIR11_12)"
 
@@ -145,8 +145,8 @@ $(WEBMIAS): $(MIAS) $(MAVEN)
 	set -e
 	$(call GIT_CHECKOUT,$(WEBMIAS_URL),$(WEBMIAS_REF),$@)
 	sed 's/^| //' >src/main/resources/cz/muni/fi/webmias/indexes.properties <<'EOF'
-	| INDEX_NAMES=$(INDEX_NTCIR10_NAME),$(INDEX_NTCIR12_NAME)
-	| PATHS=$(INDEX_NTCIR10),$(INDEX_NTCIR12)
+	| INDEX_NAMES=$(INDEX_NTCIR10_NAME),$(INDEX_NTCIR11_12_NAME)
+	| PATHS=$(INDEX_NTCIR10),$(INDEX_NTCIR11_12)
 	| STORAGES=$(DATASET_NTCIR10_CONVERTED),$(DATASET_NTCIR11_12)
 	| MAXRESULTS=$(INDEX_MAXRESULTS)
 	EOF
@@ -225,7 +225,7 @@ $(RESULTS_NTCIR11): $(MIREVAL) $(TOPICS_NTCIR11) $(JUDGEMENTS_NTCIR11) $(NTCIR_M
 	  --estimates $(NTCIR_MATH_DENSITY_NTCIR11_ESTIMATES) \
 	  --positions $(NTCIR_MATH_DENSITY_NTCIR11_POSITIONS) \
 	  --webmias-url $(TOMCAT_WEBAPP_URL) \
-		--webmias-index-number $(INDEX_NTCIR12_NUMBER) \
+		--webmias-index-number $(INDEX_NTCIR11_12_NUMBER) \
 	  --output-directory $@
 	$(MIREVAL_STARTUP_PARALLEL) \
 	  -tsvfile {} \
@@ -242,7 +242,7 @@ $(MAVEN): $(JDK)
 $(JDK):
 	$(CURL) "$(JDK_URL)" | tar xz
 
-$(TOMCAT): $(WEBMIAS) $(INDEX_NTCIR10) $(INDEX_NTCIR12)
+$(TOMCAT): $(WEBMIAS) $(INDEX_NTCIR10) $(INDEX_NTCIR11_12)
 	set -e
 	$(CURL) "$(TOMCAT_URL)" | tar xz
 	sed -i 's/port="/port="$(TOMCAT_PORT_PREFIX)/' "$@/conf/server.xml"
