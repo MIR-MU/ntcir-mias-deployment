@@ -107,7 +107,7 @@ CPUs. Only targets that take longer than a minute are listed:
 | $(INDEX_NTCIR11_12) | 17h 53m 34s | 1 |
 | $(INDEX_NTCIR10) | 9h 2m 56s | 2 |
 | $(NTCIR_MATH_DENSITY_NTCIR11) | 1h 5m 30s | 4 |
-| $(RESULTS_NTCIR11) | 53m 41s | 3 |
+| $(RESULTS_NTCIR11) | 17m 54s | 3 |
 | $(NTCIR_MATH_DENSITY_ALL) | 52m 21s | 3 |
 | $(NTCIR_MATH_DENSITY_ALL_WITHOUT_NTCIR10) | 41m 50s | 3 |
 | $(DATASET_NTCIR10_CONVERTED) | 23m 26s | 1 |
