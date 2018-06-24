@@ -226,6 +226,7 @@ $(RESULTS_NTCIR11): $(MIREVAL) $(TOPICS_NTCIR11) $(JUDGEMENTS_NTCIR11) $(NTCIR_M
 	  --positions $(NTCIR_MATH_DENSITY_NTCIR11_POSITIONS) \
 	  --webmias-url $(TOMCAT_WEBAPP_URL) \
 	  --webmias-index-number $(INDEX_NTCIR11_12_NUMBER) \
+	  --plots $(RESULTS_NTCIR11_PLOTS) \
 	  --output-directory $@
 	$(MIREVAL_STARTUP_PARALLEL) \
 	  -tsvfile {} \
