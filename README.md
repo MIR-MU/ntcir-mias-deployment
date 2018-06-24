@@ -94,9 +94,9 @@ the individual targets in the makefile:
 Storage and time requirements
 =============================
 Disregarding the datasets that you need to download beforehand, make will
-produce about 167G of data, out of which 93G will be [MIaS][] indexes, 51G the
+produce about 157G of data, out of which 93G will be [MIaS][] indexes, 51G the
 converted [NTCIR-10 Math][aizawaetal13-ntcir10] [dataset][ntcir-10-math-data],
-and 11G the final results.
+and 500M the final results.
 
 The following table shows how long it takes on average to construct the
 individual targets with 448G of RAM, and eight Intel Xeon™ X7560 2.26 GHz
@@ -107,9 +107,9 @@ CPUs. Only targets that take longer than a minute are listed:
 | $(INDEX_NTCIR11_12) | 17h 53m 34s | 1 |
 | $(INDEX_NTCIR10) | 9h 2m 56s | 2 |
 | $(NTCIR_MATH_DENSITY_NTCIR11) | 1h 5m 30s | 4 |
-| $(RESULTS_NTCIR11) | 17m 54s | 3 |
 | $(NTCIR_MATH_DENSITY_ALL) | 52m 21s | 3 |
 | $(NTCIR_MATH_DENSITY_ALL_WITHOUT_NTCIR10) | 41m 50s | 3 |
 | $(DATASET_NTCIR10_CONVERTED) | 23m 26s | 1 |
+| $(RESULTS_NTCIR11) | 2m 4s | 1 |
 
  [MIaS]: https://github.com/MIR-MU/MIaS
