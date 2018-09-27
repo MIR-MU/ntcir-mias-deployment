@@ -6,8 +6,8 @@ MIRMU_GIT_URL_PREFIX=https://github.com/MIR-MU
 # External tools
 CURL=curl --location --cookie oraclelicense=accept-securebackup-cookie
 
-MAVEN=$(shell pwd)/apache-maven-3.5.3
-MAVEN_URL=http://mirror.hosting90.cz/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
+MAVEN=$(shell pwd)/apache-maven-3.5.4
+MAVEN_URL=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.5.4/apache-maven-3.5.4-bin.tar.gz
 MAVEN_MVN=JAVA_HOME=$(JDK) nice -n 19 "$(MAVEN)"/bin/mvn
 
 JDK=$(shell pwd)/jdk1.8.0_172
