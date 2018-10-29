@@ -144,7 +144,7 @@ DATASET_NTCIR10_CONVERTED=$(shell pwd)/ntcir10-converted
 
 INDEX_NTCIR11_12_NAME=ntcir-12-5
 INDEX_NTCIR11_12=$(INDEX_BASEDIR)/$(INDEX_NTCIR11_12_NAME)
-INDEX_NTCIR11_12_NUMBER=1
+INDEX_NTCIR11_12_NUMBER=0
 DATASET_NTCIR11_12=/mnt/storage/nezalohovano-ntcir-11-12-dataset-unpacked.ro-snapshot
 
 # Uninstalling

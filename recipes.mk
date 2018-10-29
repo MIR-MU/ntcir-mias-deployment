@@ -22,7 +22,7 @@ all:
 
 plot: $(MAKEFILE2DOT_PLOT)
 
-results: $(RESULTS_NTCIR11) $(NTCIR_MATH_DENSITY_ALL_WITHOUT_NTCIR10) $(NTCIR_MATH_DENSITY_ALL)
+results: $(RESULTS_NTCIR11)
 
 $(MAKEFILE2DOT):
 	set -e
@@ -145,9 +145,9 @@ $(WEBMIAS): $(MIAS) $(MAVEN)
 	set -e
 	$(call GIT_CHECKOUT,$(WEBMIAS_URL),$(WEBMIAS_REF),$@)
 	sed 's/^| //' >src/main/resources/cz/muni/fi/webmias/indexes.properties <<'EOF'
-	| INDEX_NAMES=$(INDEX_NTCIR10_NAME),$(INDEX_NTCIR11_12_NAME)
-	| PATHS=$(INDEX_NTCIR10),$(INDEX_NTCIR11_12)
-	| STORAGES=$(DATASET_NTCIR10_CONVERTED),$(DATASET_NTCIR11_12)
+	| INDEX_NAMES=$(INDEX_NTCIR11_12_NAME)
+	| PATHS=$(INDEX_NTCIR11_12)
+	| STORAGES=$(DATASET_NTCIR11_12)
 	| MAXRESULTS=$(INDEX_MAXRESULTS)
 	EOF
 	$(MAVEN_MVN) clean install
@@ -243,7 +243,7 @@ $(MAVEN): $(JDK)
 $(JDK):
 	$(CURL) "$(JDK_URL)" | tar xz
 
-$(TOMCAT): $(WEBMIAS) $(INDEX_NTCIR10) $(INDEX_NTCIR11_12)
+$(TOMCAT): $(WEBMIAS) $(INDEX_NTCIR11_12)
 	set -e
 	$(CURL) "$(TOMCAT_URL)" | tar xz
 	sed -i 's/port="/port="$(TOMCAT_PORT_PREFIX)/' "$@/conf/server.xml"
