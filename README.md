@@ -105,8 +105,6 @@ CPUs. Only targets that take longer than a minute are listed:
 | Target name  | Wall clock time | Number of testing runs |
 | ------------ | --------------- | ---------------------- |
 | $(INDEX_NTCIR11_12) | 17h 53m 34s | 1 |
-| $(NTCIR_MATH_DENSITY_NTCIR11) | 1h 5m 30s | 4 |
-| $(DATASET_NTCIR10_CONVERTED) | 23m 26s | 1 |
 | $(RESULTS_NTCIR11) | 2m 4s | 1 |
 
  [MIaS]: https://github.com/MIR-MU/MIaS
