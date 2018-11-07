@@ -48,7 +48,7 @@ MATHMLUNIFICATOR_REF=047390437678e2b758bda1c6446b2748ea773c9b
 MIREVAL=$(shell pwd)/MIREVal
 MIREVAL_URL=$(MIRMU_GIT_URL_PREFIX)/MIREVal
 MIREVAL_REF=98b62e47a1b8a7c22a1d3c0771cd7103e8b17328
-MIREVAL_STARTUP_PARALLEL=cd $(MIREVAL)/target; JAVA_HOME=$(JDK) nice -n 19 parallel --bar --halt=2 --jobs=$(CPU_NUMBER) -- $(JDK)/bin/java -jar MIREVal-*-SNAPSHOT-jar-with-dependencies.jar '&>/dev/null'
+MIREVAL_STARTUP_PARALLEL=cd $(MIREVAL)/target; JAVA_HOME=$(JDK) nice -n 19 parallel --bar --halt=2 --jobs=1 -- $(JDK)/bin/java -jar MIREVal-*-SNAPSHOT-jar-with-dependencies.jar '&>/dev/null'
 
 RESULTS_NTCIR11=$(shell pwd)/results-ntcir-11
 RESULTS_NTCIR11_PLOTS=$(RESULTS_NTCIR11)/plot.{svg,pdf}
