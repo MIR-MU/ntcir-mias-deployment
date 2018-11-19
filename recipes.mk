@@ -1,5 +1,5 @@
 .ONESHELL:
-.PHONY: all clean results plot
+.PHONY: all clean results plot analysis
 
 SHELL=/bin/bash
 
@@ -178,3 +178,32 @@ clean:
 	# rm -rf $(JAVA_SPECIFIC)
 	rm -rf $(GIT_REPOS)
 	rm -rf $(MAKEABLE)
+
+analysis:
+	echo 'Total run time' >> $(ANALYSIS_FILE)
+	echo '==============' >> $(ANALYSIS_FILE)
+	grep 'GNU Make' <Makefile.log >> $(ANALYSIS_FILE)
+	grep "Successfully remade target file 'results'." <Makefile.log >> $(ANALYSIS_FILE)
+	echo '' >> $(ANALYSIS_FILE)
+	echo 'MIaS indexing time' >> $(ANALYSIS_FILE)
+	echo '==================' >> $(ANALYSIS_FILE)
+	grep 'DONE in total time' <Makefile.log >> $(ANALYSIS_FILE)
+	grep 'CPU time' <Makefile.log >> $(ANALYSIS_FILE)
+	grep 'user time' <Makefile.log >> $(ANALYSIS_FILE)
+	echo '' >> $(ANALYSIS_FILE)
+	echo 'Formulae count' >> $(ANALYSIS_FILE)
+	echo '==============' >> $(ANALYSIS_FILE)
+	grep 'Input formulae' <Makefile.log >> $(ANALYSIS_FILE)
+	grep 'Indexed formulae' <Makefile.log >> $(ANALYSIS_FILE)
+	echo '' >> $(ANALYSIS_FILE)
+	echo 'Index size' >> $(ANALYSIS_FILE)
+	echo '==========' >> $(ANALYSIS_FILE)
+	du -sh indexes/ntcir-11-2429-docs/ >> $(ANALYSIS_FILE)
+	echo '' >> $(ANALYSIS_FILE)
+	echo 'Metrics' >> $(ANALYSIS_FILE)
+	echo '=======' >> $(ANALYSIS_FILE)
+	cat results-ntcir-11/final_PCMath.orig.eval >> $(ANALYSIS_FILE)
+	echo '' >> $(ANALYSIS_FILE)
+	mkdir $(ANALYSIS_FILENAME)
+	mv $(ANALYSIS_FILE) $(ANALYSIS_FILENAME)
+	cp -r $(RESULTS_NTCIR11) $(ANALYSIS_FILENAME)
