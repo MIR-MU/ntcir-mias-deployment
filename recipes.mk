@@ -73,11 +73,96 @@ $(WEBMIAS): $(MIAS) $(MAVEN)
 	| STORAGES=$(DATASET_NTCIR11_12)
 	| MAXRESULTS=$(INDEX_MAXRESULTS)
 	EOF
+	(sed 's/^| //' | git apply) <<'EOF'
+	| diff --git a/src/main/java/cz/muni/fi/service/search/Results.java b/src/main/java/cz/muni/fi/service/search/Results.java
+	| index b26b068..1c7751f 100644
+	| --- a/src/main/java/cz/muni/fi/service/search/Results.java
+	| +++ b/src/main/java/cz/muni/fi/service/search/Results.java
+	| @@ -35,7 +35,8 @@ public class Results {
+	|      private int totalResults;
+	|      private int startIndex;
+	|      private int itemsPerPage;
+	| -    private long time;
+	| +    private long totalTime;
+	| +    private long coreTime;
+	|      @XmlElement(name = "Query")
+	|      private Query query;
+	| 
+	| @@ -79,12 +80,20 @@ public class Results {
+	|          this.totalResults = totalResults;
+	|      }
+	| 
+	| -    public long getTime() {
+	| -        return time;
+	| +    public long getTotalTime() {
+	| +        return totalTime;
+	|      }
+	| 
+	| -    public void setTime(long time) {
+	| -        this.time = time;
+	| +    public void setTotalTime(long totalTime) {
+	| +        this.totalTime = totalTime;
+	| +    }
+	| +
+	| +    public long getCoreTime() {
+	| +        return coreTime;
+	| +    }
+	| +
+	| +    public void setCoreTime(long coreTime) {
+	| +        this.coreTime = coreTime;
+	|      }
+	| 
+	|  }
+	| diff --git a/src/main/java/cz/muni/fi/service/search/SearchResource.java b/src/main/java/cz/muni/fi/service/search/SearchResource.java
+	| index 6ff784a..29764b0 100644
+	| --- a/src/main/java/cz/muni/fi/service/search/SearchResource.java
+	| +++ b/src/main/java/cz/muni/fi/service/search/SearchResource.java
+	| @@ -65,7 +65,8 @@ public class SearchResource {
+	|          IndexSearcher is = indexDef.getIndexSearcher();
+	|          Searching s = new Searching(is, indexDef.getStorage());
+	|          SearchResult result = s.search(convertedQuery, false, offset, limit, false, extractSubformulae, reduceWeighting);
+	| -        r.setTime(result.getTotalSearchTime());
+	| +        r.setTotalTime(result.getTotalSearchTime());
+	| +        r.setCoreTime(result.getCoreSearchTime());
+	|          r.setTotalResults(result.getTotalResults());
+	|          r.setItemsPerPage(limit);
+	|          r.setStartIndex(offset);
+	EOF
 	$(MAVEN_MVN) clean install
 
 $(MIAS): $(MIASMATH) $(MAVEN)
 	set -e
 	$(call GIT_CHECKOUT,$(MIAS_URL),$(MIAS_REF),$@)
+	(sed 's/^| //' | git apply) <<'EOF'
+	| diff --git a/src/main/java/cz/muni/fi/mias/MIaS.java b/src/main/java/cz/muni/fi/mias/MIaS.java
+	| index 18151db..893cf70 100644
+	| --- a/src/main/java/cz/muni/fi/mias/MIaS.java
+	| +++ b/src/main/java/cz/muni/fi/mias/MIaS.java
+	| @@ -37,6 +37,7 @@ public class MIaS {
+	|                  Indexing i = new Indexing();
+	|                  i.deleteIndexDir();
+	|                  i.indexFiles(cmd.getOptionValues(Settings.OPTION_OVERWRITE)[0], cmd.getOptionValues(Settings.OPTION_OVERWRITE)[1]);
+	| +                i.getStats();
+	|              }
+	|              if (cmd.hasOption(Settings.OPTION_OPTIMIZE)) {
+	|                  Indexing i = new Indexing();
+	| diff --git a/src/main/java/cz/muni/fi/mias/indexing/Indexing.java b/src/main/java/cz/muni/fi/mias/indexing/Indexing.java
+	| index 0b66b0f..788d4e9 100644
+	| --- a/src/main/java/cz/muni/fi/mias/indexing/Indexing.java
+	| +++ b/src/main/java/cz/muni/fi/mias/indexing/Indexing.java
+	| @@ -135,9 +135,10 @@ public class Indexing {
+	|                          tasks[i] = null;
+	|                          for (Document doc : docs) {
+	|                              if (doc != null) {
+	| -                                if (progress % 10000 == 0) {
+	| +                                if (progress % 1000 == 0) {
+	|                                      printTimes();
+	|                                      writer.commit();
+	| +                                    getStats();
+	|                                  }
+	|                                  try {
+	|                                      LOG.info("adding to index {} docId={}",doc.get("path"),doc.get("id"));
+	EOF
 	$(MAVEN_MVN) clean install
 
 $(MIASMATH): $(MATHMLCAN) $(MATHMLUNIFICATOR) $(MAVEN)
@@ -180,25 +265,27 @@ clean:
 	rm -rf $(MAKEABLE)
 
 analysis:
+	set -e
 	echo 'Total run time' >> $(ANALYSIS_FILE)
 	echo '==============' >> $(ANALYSIS_FILE)
 	grep 'GNU Make' <Makefile.log >> $(ANALYSIS_FILE)
 	grep "Successfully remade target file 'results'." <Makefile.log >> $(ANALYSIS_FILE)
 	echo '' >> $(ANALYSIS_FILE)
-	echo 'MIaS indexing time' >> $(ANALYSIS_FILE)
-	echo '==================' >> $(ANALYSIS_FILE)
-	grep 'DONE in total time' <Makefile.log >> $(ANALYSIS_FILE)
-	grep 'CPU time' <Makefile.log >> $(ANALYSIS_FILE)
-	grep 'user time' <Makefile.log >> $(ANALYSIS_FILE)
-	echo '' >> $(ANALYSIS_FILE)
-	echo 'Formulae count' >> $(ANALYSIS_FILE)
-	echo '==============' >> $(ANALYSIS_FILE)
-	grep 'Input formulae' <Makefile.log >> $(ANALYSIS_FILE)
-	grep 'Indexed formulae' <Makefile.log >> $(ANALYSIS_FILE)
+	echo 'MIaS indexing time + formulae count' >> $(ANALYSIS_FILE)
+	echo '===================================' >> $(ANALYSIS_FILE)
+	grep -A 4 'DONE in total time' <Makefile.log >> $(ANALYSIS_FILE)
 	echo '' >> $(ANALYSIS_FILE)
 	echo 'Index size' >> $(ANALYSIS_FILE)
 	echo '==========' >> $(ANALYSIS_FILE)
+	grep -B 1 'Index size:' <Makefile.log >> $(ANALYSIS_FILE)
+	echo '--' >> $(ANALYSIS_FILE)
 	du -sh indexes/ntcir-11-2429-docs/ >> $(ANALYSIS_FILE)
+	echo '' >> $(ANALYSIS_FILE)
+	echo 'MIaS search times' >> $(ANALYSIS_FILE)
+	echo '=================' >> $(ANALYSIS_FILE)
+	grep -r "<coreTime>" results-ntcir-11/NTCIR11-Math-*_PCMath.*.response.xml > coreSearchTimesPCMath.txt
+	grep -r "<totalTime>" results-ntcir-11/NTCIR11-Math-*_PCMath.*.response.xml > totalSearchTimesPCMath.txt
+	echo 'TODO compute average search times..' >> $(ANALYSIS_FILE)
 	echo '' >> $(ANALYSIS_FILE)
 	echo 'Metrics' >> $(ANALYSIS_FILE)
 	echo '=======' >> $(ANALYSIS_FILE)
@@ -206,4 +293,6 @@ analysis:
 	echo '' >> $(ANALYSIS_FILE)
 	mkdir $(ANALYSIS_FILENAME)
 	mv $(ANALYSIS_FILE) $(ANALYSIS_FILENAME)
+	mv coreSearchTimesPCMath.txt $(ANALYSIS_FILENAME)/coreSearchTimesPCMath.txt
+	mv totalSearchTimesPCMath.txt $(ANALYSIS_FILENAME)/totalSearchTimesPCMath.txt
 	cp -r $(RESULTS_NTCIR11) $(ANALYSIS_FILENAME)
