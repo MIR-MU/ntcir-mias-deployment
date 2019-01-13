@@ -268,31 +268,39 @@ analysis:
 	set -e
 	echo 'Total run time' >> $(ANALYSIS_FILE)
 	echo '==============' >> $(ANALYSIS_FILE)
-	grep 'GNU Make' <Makefile.log >> $(ANALYSIS_FILE)
-	grep "Successfully remade target file 'results'." <Makefile.log >> $(ANALYSIS_FILE)
+	grep 'GNU Make' <$(LOGFILE) >> $(ANALYSIS_FILE)
+	grep "Successfully remade target file 'results'." <$(LOGFILE) >> $(ANALYSIS_FILE)
 	echo '' >> $(ANALYSIS_FILE)
 	echo 'MIaS indexing time + formulae count' >> $(ANALYSIS_FILE)
 	echo '===================================' >> $(ANALYSIS_FILE)
-	grep -A 4 'DONE in total time' <Makefile.log >> $(ANALYSIS_FILE)
+	grep -A 4 'DONE in total time' <$(LOGFILE) >> $(ANALYSIS_FILE)
 	echo '' >> $(ANALYSIS_FILE)
 	echo 'Index size' >> $(ANALYSIS_FILE)
 	echo '==========' >> $(ANALYSIS_FILE)
-	grep -B 1 'Index size:' <Makefile.log >> $(ANALYSIS_FILE)
+	grep -B 1 'Index size:' <$(LOGFILE) >> $(ANALYSIS_FILE)
 	echo '--' >> $(ANALYSIS_FILE)
-	du -sh indexes/ntcir-11-2429-docs/ >> $(ANALYSIS_FILE)
+	du -sh $(INDEX_NTCIR11_12) >> $(ANALYSIS_FILE)
 	echo '' >> $(ANALYSIS_FILE)
 	echo 'MIaS search times' >> $(ANALYSIS_FILE)
 	echo '=================' >> $(ANALYSIS_FILE)
-	grep -r "<coreTime>" results-ntcir-11/NTCIR11-Math-*_PCMath.*.response.xml > coreSearchTimesPCMath.txt
-	grep -r "<totalTime>" results-ntcir-11/NTCIR11-Math-*_PCMath.*.response.xml > totalSearchTimesPCMath.txt
+	grep -r "<coreTime>" $(RESULTS_NTCIR11)/NTCIR11-Math-*_CMath.*.response.xml > coreTimesCMath-$(ANALYSIS_FILENAME).txt
+	grep -r "<coreTime>" $(RESULTS_NTCIR11)/NTCIR11-Math-*_PMath.*.response.xml > coreTimesPMath-$(ANALYSIS_FILENAME).txt
+	grep -r "<coreTime>" $(RESULTS_NTCIR11)/NTCIR11-Math-*_PCMath.*.response.xml > coreTimesPCMath-$(ANALYSIS_FILENAME).txt
+	grep -r "<coreTime>" $(RESULTS_NTCIR11)/NTCIR11-Math-*_TeX.*.response.xml > coreTimesTeX-$(ANALYSIS_FILENAME).txt
+	grep -r "<totalTime>" $(RESULTS_NTCIR11)/NTCIR11-Math-*_CMath.*.response.xml > totalTimesCMath-$(ANALYSIS_FILENAME).txt
+	grep -r "<totalTime>" $(RESULTS_NTCIR11)/NTCIR11-Math-*_PMath.*.response.xml > totalTimesPMath-$(ANALYSIS_FILENAME).txt
+	grep -r "<totalTime>" $(RESULTS_NTCIR11)/NTCIR11-Math-*_PCMath.*.response.xml > totalTimesPCMath-$(ANALYSIS_FILENAME).txt
+	grep -r "<totalTime>" $(RESULTS_NTCIR11)/NTCIR11-Math-*_TeX.*.response.xml > totalTimesTeX-$(ANALYSIS_FILENAME).txt
 	echo 'TODO compute average search times..' >> $(ANALYSIS_FILE)
-	echo '' >> $(ANALYSIS_FILE)
-	echo 'Metrics' >> $(ANALYSIS_FILE)
-	echo '=======' >> $(ANALYSIS_FILE)
-	cat results-ntcir-11/final_PCMath.orig.eval >> $(ANALYSIS_FILE)
 	echo '' >> $(ANALYSIS_FILE)
 	mkdir $(ANALYSIS_FILENAME)
 	mv $(ANALYSIS_FILE) $(ANALYSIS_FILENAME)
-	mv coreSearchTimesPCMath.txt $(ANALYSIS_FILENAME)/coreSearchTimesPCMath.txt
-	mv totalSearchTimesPCMath.txt $(ANALYSIS_FILENAME)/totalSearchTimesPCMath.txt
+	mv coreTimesCMath-$(ANALYSIS_FILENAME).txt $(ANALYSIS_FILENAME)/coreTimesCMath-$(ANALYSIS_FILENAME).txt
+	mv coreTimesPMath-$(ANALYSIS_FILENAME).txt $(ANALYSIS_FILENAME)/coreTimesPMath-$(ANALYSIS_FILENAME).txt
+	mv coreTimesPCMath-$(ANALYSIS_FILENAME).txt $(ANALYSIS_FILENAME)/coreTimesPCMath-$(ANALYSIS_FILENAME).txt
+	mv coreTimesTeX-$(ANALYSIS_FILENAME).txt $(ANALYSIS_FILENAME)/coreTimesTeX-$(ANALYSIS_FILENAME).txt
+	mv totalTimesCMath-$(ANALYSIS_FILENAME).txt $(ANALYSIS_FILENAME)/totalTimesCMath-$(ANALYSIS_FILENAME).txt
+	mv totalTimesPMath-$(ANALYSIS_FILENAME).txt $(ANALYSIS_FILENAME)/totalTimesPMath-$(ANALYSIS_FILENAME).txt
+	mv totalTimesPCMath-$(ANALYSIS_FILENAME).txt $(ANALYSIS_FILENAME)/totalTimesPCMath-$(ANALYSIS_FILENAME).txt
+	mv totalTimesTeX-$(ANALYSIS_FILENAME).txt $(ANALYSIS_FILENAME)/totalTimesTeX-$(ANALYSIS_FILENAME).txt
 	cp -r $(RESULTS_NTCIR11) $(ANALYSIS_FILENAME)
