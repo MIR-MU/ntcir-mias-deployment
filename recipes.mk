@@ -147,15 +147,11 @@ $(MIAS): $(MIASMATH) $(MAVEN)
 	|              if (cmd.hasOption(Settings.OPTION_OPTIMIZE)) {
 	|                  Indexing i = new Indexing();
 	| diff --git a/src/main/java/cz/muni/fi/mias/indexing/Indexing.java b/src/main/java/cz/muni/fi/mias/indexing/Indexing.java
-	| index 0b66b0f..788d4e9 100644
+	| index 0b66b0f..6ce3732 100644
 	| --- a/src/main/java/cz/muni/fi/mias/indexing/Indexing.java
 	| +++ b/src/main/java/cz/muni/fi/mias/indexing/Indexing.java
-	| @@ -135,9 +135,10 @@ public class Indexing {
-	|                          tasks[i] = null;
-	|                          for (Document doc : docs) {
-	|                              if (doc != null) {
-	| -                                if (progress % 10000 == 0) {
-	| +                                if (progress % 1000 == 0) {
+	| @@ -138,6 +138,7 @@ public class Indexing {
+	|                                  if (progress % 10000 == 0) {
 	|                                      printTimes();
 	|                                      writer.commit();
 	| +                                    getStats();
