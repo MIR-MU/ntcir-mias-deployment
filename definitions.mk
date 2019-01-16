@@ -10,8 +10,8 @@ MAVEN=$(shell pwd)/apache-maven-3.5.4
 MAVEN_URL=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.5.4/apache-maven-3.5.4-bin.tar.gz
 MAVEN_MVN=JAVA_HOME=$(JDK) nice -n 19 "$(MAVEN)"/bin/mvn
 
-JDK=$(shell pwd)/jdk1.8.0_192
-JDK_URL=https://download.oracle.com/otn-pub/java/jdk/8u192-b12/750e1c8617c5452694857ad95c3ee230/jdk-8u192-linux-x64.tar.gz
+JDK=$(shell pwd)/jdk1.8.0_202
+JDK_URL=https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jdk-8u202-linux-x64.tar.gz
 
 TOMCAT=$(shell pwd)/apache-tomcat-8.5.29
 TOMCAT_URL=https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.29/bin/apache-tomcat-8.5.29.tar.gz
